@@ -31,12 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'supply_chain',
 ]
 
 MIDDLEWARE = [
@@ -120,3 +122,22 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Konfigurasi Jazzmin (Dashboard Pabrik)
+JAZZMIN_SETTINGS = {
+    "site_title": "PT. SAI Dashboard",
+    "site_header": "Smart Circuit Supply",
+    "site_brand": "SAI - Circuit Control",
+    "welcome_sign": "Welcome to Circuit Supply System",
+    "copyright": "PT. Surabaya Autocomp Indonesia",
+    "search_model": "auth.User", # ubah ke model barang
+    "topmenu_links": [
+        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+    ],
+    "show_ui_builder": True, # Tombol setting tampilan di pojok kanan (untuk demo)
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly", 
+    "dark_mode_theme": "darkly",
+}
