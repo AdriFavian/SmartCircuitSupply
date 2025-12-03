@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
-# 1. Master Data Jenis Sirkuit (Produk)
+# Master Data Jenis Sirkuit (Produk)
 class Circuit(models.Model):
     CATEGORY_CHOICES = [
         ('MAIN', 'Main Harness'),
@@ -25,7 +25,7 @@ class Circuit(models.Model):
     is_critical.boolean = True
     is_critical.short_description = "Status Kritis?"
 
-# 2. Status Mesin (Menjawab masalah kerusakan mesin)
+# Status Mesin 
 class Machine(models.Model):
     STATUS_CHOICES = [
         ('RUNNING', 'Running Normal'),
@@ -40,7 +40,7 @@ class Machine(models.Model):
     def __str__(self):
         return self.name
 
-# 3. Pencatatan Transaksi Supply (Keluar Masuk)
+# Pencatatan Transaksi Supply (Keluar-Masuk)
 class SupplyLog(models.Model):
     TYPE_CHOICES = [
         ('IN', 'Masuk dari Gudang'),
@@ -54,15 +54,15 @@ class SupplyLog(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
 
     def save(self, *args, **kwargs):
-        # Logika Otomatis: Update stok saat transaksi disimpan
-        # Jika ini data baru (belum punya ID), update stok
+        # auto update stok saat transaksi disimpan
+        # if data baru (belum punya ID) = update stok
         if not self.pk: 
             if self.transaction_type == 'IN':
                 self.circuit.stock_qty += self.quantity
             else:
                 self.circuit.stock_qty -= self.quantity
             
-            self.circuit.save() # Simpan perubahan stok ke master barang
+            self.circuit.save() # Simpan ke master barang
             
         super().save(*args, **kwargs)
 
